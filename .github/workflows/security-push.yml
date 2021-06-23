@@ -31,6 +31,7 @@ jobs:
       - uses: 8398a7/action-slack@v3
         with:
           status: custom
+          job_name: detect-secrets
           fields: workflow,job,commit,repo,ref
           custom_payload: |
             {
@@ -67,6 +68,7 @@ jobs:
       - uses: 8398a7/action-slack@v3
         with:
           status: custom
+          job_name: static-analysis
           fields: workflow,job,commit,repo,ref
           custom_payload: |
             {
@@ -128,6 +130,7 @@ jobs:
       - uses: 8398a7/action-slack@v3
         with:
           status: custom
+          job_name: dependency-check
           fields: workflow,job,commit,repo,ref
           custom_payload: |
             {
@@ -188,12 +191,13 @@ jobs:
       - uses: 8398a7/action-slack@v3
         with:
           status: custom
-          fields: workflow,job,commit,repo,ref
+          job_name: dynamic-analysis
+          fields: workflow,job,commit,repo,ref,took
           custom_payload: |
             {
               attachments: [{
                 color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-                text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} - ${{ job.status }}`,
+                text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} - ${{ job.status }} in ${process.env.AS_TOOK`,
               }]
             }
         env:
